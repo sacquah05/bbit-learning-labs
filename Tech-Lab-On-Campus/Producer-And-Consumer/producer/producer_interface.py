@@ -12,27 +12,63 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pika
+import os
+
 
 class mqProducerInterface:
     def __init__(self, routing_key: str, exchange_name: str) -> None:
         # Save parameters to class variables
+        self.routing_key = routing_key
+        self.exchange_name = exchange_name
 
         # Call setupRMQConnection
+        self.setupRMQConnection(self)
         pass
 
-    def setupRMQConnection(self) -> None:
+    #def setupRMQConnection(self) -> None:
         # Set-up Connection to RabbitMQ service
+    
+        #self.channel = channel
+        #self.exchange = exchange
+
+        
+        
+
+    def publishOrder(self, message: str, ticker: str, price: str, sector: str) -> None:
+
+        con_params = pika.URLParameters(os.environ["AMQP_URL"])
+        connection = pika.BlockingConnection(parameters=con_params)
 
         # Establish Channel
-
+        
+        channel = connection.channel()
+        
         # Create the exchange if not already present
+        #exchange = channel.exchange_declare(exchange="Exchange Name")
+        channel.exchange_declare(
+            exchange="Exchange Name", exchange_type="topic"
+)
 
-        pass
+        
 
-    def publishOrder(self, message: str) -> None:
+        
+        
         # Basic Publish to Exchange
+        channel.basic_publish(
+            exchange="Exchange Name",
+            routing_key="Routing Key",
+            body="Wassap",
+)
+
+       
+
 
         # Close Channel
+
+        channel.close()
+        connection.close()
+
 
         # Close Connection
     

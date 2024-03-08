@@ -23,6 +23,7 @@ from solution.producer_sol import mqProducer  # pylint: disable=import-error
 
 def main() -> None:
     producer = mqProducer(routing_key="Tech Lab Key",exchange_name="Tech Lab Exchange")
+   #producer.setupRMQConnection()
     producer.publishOrder("Success! Producer And Consumer Section Complete.")
 
 
